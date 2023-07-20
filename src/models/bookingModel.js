@@ -3,7 +3,6 @@ const { Schema } = mongoose;
 
 const bookingSchema = new mongoose.Schema(
   {
-    bookingID: { type: String, required: true },
     name: { type: String, required: true },
     email: { type: String, required: true },
     origin: { type: String, required: true },

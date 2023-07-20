@@ -12,6 +12,6 @@ const router = express.Router();
 
 router.post("/", validateBookingCreation, createBooking);
 
-router.get("/:bookingID", validateBookingGetting, getBooking);
+router.get("/:id", validateBookingGetting, getBooking);
 
 module.exports = router;

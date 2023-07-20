@@ -25,10 +25,10 @@ const validateBookingCreation = async (req, res, next) => {
 };
 
 const validateBookingGetting = async (req, res, next) => {
-  const bookingID = req.params.bookingID;
+  const id = req.params.id;
   try {
-    if (!bookingID) {
-      res.status(404).json({ error: "bookingID is mandatory" });
+    if (!id) {
+      res.status(404).json({ error: "id is mandatory" });
     } else {
       next();
     }

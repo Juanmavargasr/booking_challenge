@@ -1,34 +1,21 @@
 const Booking = require("../models/bookingModel");
 const db = require("../db");
 require("dotenv").config();
-const generateBooking = require("../utils/generateBooking");
 
 const createBooking = async (req, res) => {
   const { name, email, origin, destination, departureDate, timeDuration } =
     req.body;
 
   try {
-    searchBook = 0;
-    bookingExist = true;
+    const newBooking = new Booking({
+      name,
+      email,
+      origin,
+      destination,
+      departureDate,
+      timeDuration,
+    });
 
-    do {
-      var bookingID = generateBooking();
-      var newBooking = new Booking({
-        bookingID: bookingID,
-        name,
-        email,
-        origin,
-        destination,
-        departureDate,
-        timeDuration,
-      });
-      const existingBookin = await Booking.findOne({ bookingID });
-      console.log({ existingBookin });
-      if (!existingBookin) {
-        bookingExist = false;
-      }
-    } while (bookingExist === true);
-    console.log(newBooking);
     const savedBooking = await newBooking.save();
     console.log("succesfully booking creation");
     res.status(201).json({
@@ -43,8 +30,8 @@ const createBooking = async (req, res) => {
 
 const getBooking = async (req, res) => {
   try {
-    const bookingID = req.params.bookingID;
-    const booking = await Booking.findOne({ bookingID: bookingID });
+    const id = req.params.id;
+    const booking = await Booking.findById({ _id: id });
     if (!booking) {
       res.status(404).json({ error: "Booking not found" });
     } else {
