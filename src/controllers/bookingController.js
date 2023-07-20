@@ -48,18 +48,53 @@ const getBooking = async (req, res) => {
 };
 
 const putBooking = async (req, res) => {
-  const bookingID = req.params.bookingID;
-  const { name, email, origin, destination, departureDate, timeDuration } =
-    req.body;
-  var updatedBooking = new Booking({
-    bookingID: bookingID,
-    name,
-    email,
-    origin,
-    destination,
-    departureDate,
-    timeDuration,
-  });
+  try {
+    const id = req.params.id;
+    const { name, email, origin, destination, departureDate, timeDuration } =
+      req.body;
+    var updatedBooking = {
+      name,
+      email,
+      origin,
+      destination,
+      departureDate,
+      timeDuration,
+    };
+    const saveUpdatedBooking = await Booking.findByIdAndUpdate(
+      { _id: id },
+      updatedBooking,
+      { new: true }
+    );
+    console.log("Succesfully Booking update");
+    res.status(200).json({
+      Message: "succesfully booking update",
+      Updated_booking: updatedBooking,
+    });
+  } catch (error) {
+    console.error("error updating booking", error);
+    res.status(500).json({
+      error: "error updating booking",
+    });
+  }
 };
 
-module.exports = { createBooking, getBooking };
+const deleteBooking = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const BookingDeleted = await Booking.findByIdAndRemove({
+      _id: id,
+    });
+    console.log("Succesfully Booking delete");
+    res.status(200).json({
+      Message: "succesfully booking update",
+      Deleted_booking: BookingDeleted,
+    });
+  } catch (error) {
+    console.error("error deleting booking", error);
+    res.status(500).json({
+      error: "error deleting booking",
+    });
+  }
+};
+
+module.exports = { createBooking, getBooking, putBooking, deleteBooking };
