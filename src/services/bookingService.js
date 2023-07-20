@@ -1,6 +1,7 @@
 const User = require("../models/bookingModel");
 const db = require("../db");
 
+//middleware to check all data is complete to create the user.
 const validateBookingCreation = async (req, res, next) => {
   const { name, email, origin, destination, departureDate, timeDuration } =
     req.body;
@@ -24,6 +25,7 @@ const validateBookingCreation = async (req, res, next) => {
   }
 };
 
+//middleware to check the url contains an BooingID number.
 const validateBookingGetting = async (req, res, next) => {
   const bookingID = req.params.bookingID;
   try {

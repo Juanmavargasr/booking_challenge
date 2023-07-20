@@ -3,6 +3,7 @@ const db = require("../db");
 require("dotenv").config();
 const generateBooking = require("../utils/generateBooking");
 
+//Api to create a booking, itself check to don't cloning a booking number, use an imported function to generate the booking number
 const createBooking = async (req, res) => {
   const { name, email, origin, destination, departureDate, timeDuration } =
     req.body;
@@ -39,6 +40,7 @@ const createBooking = async (req, res) => {
   }
 };
 
+//Api to get a booking
 const getBooking = async (req, res) => {
   try {
     const bookingID = req.params.bookingID;
@@ -58,6 +60,7 @@ const getBooking = async (req, res) => {
   }
 };
 
+//Api to update a booking
 const putBooking = async (req, res) => {
   try {
     const bookingID = req.params.bookingID;
@@ -89,16 +92,17 @@ const putBooking = async (req, res) => {
   }
 };
 
+//Api to delete a booking
 const deleteBooking = async (req, res) => {
   try {
     const bookingID = req.params.bookingID;
-    const deletedBooking = await Booking.findOneAndDelete({
+    const bookingDeleted = await Booking.findOneAndDelete({
       bookingID: bookingID,
     });
     console.log("Succesfully Booking delete");
     res.status(200).json({
       Message: "Succesfully Booking delete",
-      Deleted_booking: deleteBooking,
+      Deleted_booking: bookingDeleted,
     });
   } catch (error) {
     console.error("error deleting booking", error);

@@ -1,3 +1,4 @@
+// function to generate a code with 6 aphanumeric characters
 const generateBooking = () => {
   const allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const bookingLength = 6;
