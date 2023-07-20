@@ -23,12 +23,10 @@ const createBooking = async (req, res) => {
         timeDuration,
       });
       const existingBookin = await Booking.findOne({ bookingID });
-      console.log({ existingBookin });
       if (!existingBookin) {
         bookingExist = false;
       }
     } while (bookingExist === true);
-    console.log(newBooking);
     const savedBooking = await newBooking.save();
     console.log("succesfully booking creation");
     res.status(201).json({
@@ -61,18 +59,53 @@ const getBooking = async (req, res) => {
 };
 
 const putBooking = async (req, res) => {
-  const bookingID = req.params.bookingID;
-  const { name, email, origin, destination, departureDate, timeDuration } =
-    req.body;
-  var updatedBooking = new Booking({
-    bookingID: bookingID,
-    name,
-    email,
-    origin,
-    destination,
-    departureDate,
-    timeDuration,
-  });
+  try {
+    const bookingID = req.params.bookingID;
+    const { name, email, origin, destination, departureDate, timeDuration } =
+      req.body;
+    var updatedBooking = {
+      name,
+      email,
+      origin,
+      destination,
+      departureDate,
+      timeDuration,
+    };
+    const saveUpdatedBooking = await Booking.findOneAndUpdate(
+      { bookingID: bookingID },
+      updatedBooking,
+      { new: true }
+    );
+    console.log("Succesfully Booking update");
+    res.status(200).json({
+      Message: "succesfully booking update",
+      Updated_booking: updatedBooking,
+    });
+  } catch (error) {
+    console.error("error updating booking", error);
+    res.status(500).json({
+      error: "error updating booking",
+    });
+  }
 };
 
-module.exports = { createBooking, getBooking };
+const deleteBooking = async (req, res) => {
+  try {
+    const bookingID = req.params.bookingID;
+    const deletedBooking = await Booking.findOneAndDelete({
+      bookingID: bookingID,
+    });
+    console.log("Succesfully Booking delete");
+    res.status(200).json({
+      Message: "Succesfully Booking delete",
+      Deleted_booking: deleteBooking,
+    });
+  } catch (error) {
+    console.error("error deleting booking", error);
+    res.status(500).json({
+      error: "error deleting booking",
+    });
+  }
+};
+
+module.exports = { createBooking, getBooking, putBooking, deleteBooking };
